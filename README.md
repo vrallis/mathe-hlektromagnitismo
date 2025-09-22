@@ -8,4 +8,4 @@ H erotisis ine sto questions.json
 
 An thes na kaneis kapoia diorthosi stin theoria go ahead anixe pull request.
 
-Xekina na mathaineis: 
+Xekina na mathaineis: https://github.com/vrallis/mathe-hlektromagnitismo
