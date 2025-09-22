@@ -54,7 +54,6 @@ class QuizApp {
     loadRandomQuestion() {
         if (this.questions.length === 0) return;
 
-        // Reset state
         this.selectedAnswer = null;
         this.isAnswered = false;
 
@@ -62,16 +61,13 @@ class QuizApp {
         const randomIndex = Math.floor(Math.random() * this.questions.length);
         this.currentQuestion = this.questions[randomIndex];
 
-        // Generate random false answers from other questions
         const falseAnswers = this.generateRandomFalseAnswers(this.currentQuestion);
         
-        // Create answers array with correct answer and 3 false answers
         const answers = [
             { text: this.currentQuestion.correctAnswer, correct: true },
             ...falseAnswers
         ];
 
-        // Shuffle answers to randomize order
         this.currentQuestion.shuffledAnswers = this.shuffleArray(answers);
 
         // Display question
@@ -79,10 +75,10 @@ class QuizApp {
     }
 
     generateRandomFalseAnswers(currentQuestion) {
-        // Get all other questions (excluding current one)
+        // Get all other questions
         const otherQuestions = this.questions.filter(q => q.id !== currentQuestion.id);
         
-        // Shuffle other questions and take 3 random correct answers as false answers
+        // wrong questions shuffle
         const shuffledOthers = this.shuffleArray(otherQuestions);
         
         return shuffledOthers.slice(0, 3).map(q => ({
@@ -124,7 +120,7 @@ class QuizApp {
             button.disabled = false;
         });
 
-        // Render math expressions after a short delay to ensure DOM is updated
+        // Render math expressions
         setTimeout(() => {
             this.renderMath();
         }, 100);
@@ -166,7 +162,7 @@ class QuizApp {
             this.score++;
             selectedButton.classList.remove('selected');
             selectedButton.classList.add('correct');
-            // No feedback message for correct answers
+            
         } else {
             selectedButton.classList.remove('selected');
             selectedButton.classList.add('incorrect');
@@ -179,20 +175,17 @@ class QuizApp {
                 }
             });
             
-            // No feedback message for incorrect answers
+            
         }
 
-        // Disable all buttons
         const answerButtons = document.querySelectorAll('.answer-btn');
         answerButtons.forEach(button => {
             button.disabled = true;
         });
 
-        // Update score and save progress
         this.updateScore();
         this.saveProgress();
 
-        // Show next button
         document.getElementById('next-btn').style.display = 'inline-block';
     }
 
@@ -203,7 +196,6 @@ class QuizApp {
     }
 
     nextQuestion() {
-        // Show loading briefly for better UX
         document.getElementById('quiz-container').style.display = 'none';
         document.getElementById('loading').style.display = 'block';
 
@@ -269,7 +261,6 @@ class QuizApp {
     }
 }
 
-// Global functions for HTML onclick events
 let quizApp;
 
 function selectAnswer(answerIndex) {
@@ -298,7 +289,7 @@ function handleFileImport(event) {
     const file = event.target.files[0];
     if (file) {
         quizApp.importProgress(file);
-        event.target.value = ''; // Reset file input
+        event.target.value = '';
     }
 }
 
@@ -309,7 +300,6 @@ function toggleTheme() {
     
     body.classList.toggle('dark-mode');
     
-    // Update icons
     if (body.classList.contains('dark-mode')) {
         moonIcon.style.display = 'none';
         sunIcon.style.display = 'block';
@@ -337,13 +327,13 @@ function loadTheme() {
     }
 }
 
-// Initialize quiz when page loads
+// Initialize quiz
 document.addEventListener('DOMContentLoaded', () => {
-    loadTheme(); // Load theme before initializing quiz
+    loadTheme();
     quizApp = new QuizApp();
 });
 
-// Add keyboard support
+// keyboard shortcuts
 document.addEventListener('keydown', (event) => {
     if (quizApp && !quizApp.isAnswered) {
         switch(event.key) {
